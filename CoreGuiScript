@@ -1,4 +1,5 @@
 --This script is 1 time execute, rejoin to modify the settings again :)
+--Discord: discord.gg/6q6Q8AWDp3
 --Settings
 EnabHealth = true --Enable old healthbar
 RemoveCurrentGameGraphics = true --WARNING: This may cause fps game breaking or not working, if this occur, disable this feature
