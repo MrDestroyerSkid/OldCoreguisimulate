@@ -1,7 +1,7 @@
 --This script is 1 time execute, rejoin to modify the settings again :)
 --Settings
 EnabHealth = true --Enable old healthbar
-RemoveCurrentGameGraphics = true --WARNING: This may cause some game (mostly fps game) breaking or not working, if this occur, disable this feature
+RemoveCurrentGameGraphics = true --WARNING: This may cause fps game breaking or not working, if this occur, disable this feature
 
 --Code
 local CoreGui = game:GetService("CoreGui")
