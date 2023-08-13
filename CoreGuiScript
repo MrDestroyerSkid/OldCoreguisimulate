@@ -141,8 +141,8 @@ pcall(function()
         end
         if Humanoid.Health < Humanoid.MaxHealth/2 then
             bar.BackgroundColor3 = Color3.new(1,(Humanoid.Health/Humanoid.MaxHealth)*2,0)
+        end
 end)
-        end 
 	end)
 end))
     spawn(function()
@@ -385,6 +385,7 @@ end)
     end
     
     game:GetService("Players").PlayerAdded:Connect(function(player)
+    pcall(function()
         local function isbc_func()
             if player.MembershipType == Enum.MembershipType.Premium then
                 return true
@@ -404,6 +405,7 @@ end)
         end
 
         addplr(player.Name, isbc_func(), isfriend_func(), isdev_func())
+        end)
     end)
 
     game:GetService("Players").PlayerRemoving:Connect(function(player)
