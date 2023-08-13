@@ -1,4 +1,9 @@
-EnabHealth = true
+--This script is 1 time execute, rejoin to modify the settings again :)
+--Settings
+EnabHealth = true --Enable old healthbar
+RemoveCurrentGameGraphics = true --WARNING: This may cause some game (mostly fps game) breaking or not working, if this occur, disable this feature
+
+--Code
 local CoreGui = game:GetService("CoreGui")
 local RobloxGui = CoreGui:FindFirstChild("RobloxGui")
 local UserInputService = game:GetService("UserInputService")
@@ -9,8 +14,8 @@ local TopBar = game:GetService("CoreGui"):WaitForChild("TopBarApp"):FindFirstChi
 local ChatIcon = TopBar:WaitForChild("LeftFrame"):WaitForChild("ChatIcon"):WaitForChild("Background"):WaitForChild("Icon")
 
 local UIS = game:GetService("UserInputService")
-
 --CoreGui Modification
+pcall(function()
 TopBar.Name = "TopBarContainer"
 TopBar.Parent = RobloxGui
 TopBar.Position = UDim2.new(0,0,0,-36)
@@ -40,12 +45,17 @@ TopBar.LeftFrame.ChatIcon.Background.Icon.Position = UDim2.new(0, 14, 0, 13)
 TopBar.LeftFrame.ChatIcon.Background.Icon.Size = UDim2.new(0, 28, 0, 27)
 
 TopBar.LeftFrame.MenuIcon.Background.Icon.Image = "rbxasset://textures/ui/Menu/Hamburger.png"
-    
+
+local settingsUI = RobloxGui.SettingsClippingShield.SettingsShield.MenuContainer
+settingsUI.HubBar.HubBarHomeButton:Destroy()
+settingsUI.HubBar.HubBarContainer.Position = UDim2.new(0, 1, 0, 0)
+settingsUI.HubBar.HubBarContainer.Size = UDim2.new(1, 0, 1, 0)
+end)
 --Graphics
 	local cc = Instance.new("ColorCorrectionEffect")
     local lighting = game:GetService("Lighting")
 
-    --// hd killer
+if RemoveCurrentGameGraphics == true then
    local ihateu = {"DepthOfFieldEffect", "SunRaysEffect", "BloomEffect", "BlurEffect", "ColorCorrectionEffect", "Atmosphere"}
     for i, v in pairs(lighting:GetChildren()) do
         for index, value in ipairs(ihateu) do
@@ -54,6 +64,7 @@ TopBar.LeftFrame.MenuIcon.Background.Icon.Image = "rbxasset://textures/ui/Menu/H
             end
         end
     end
+end
 
     --// setup
     cc.Parent = game.Lighting
@@ -67,6 +78,7 @@ TopBar.LeftFrame.MenuIcon.Background.Icon.Image = "rbxasset://textures/ui/Menu/H
 --Texture
 for _, v in ipairs(game:GetDescendants()) do
     if v:IsA("BasePart") and v.Material == Enum.Material.Plastic and v.TopSurface == Enum.SurfaceType.Studs then
+        if not game:GetService"Players":GetPlayerFromCharacter(v.Parent) then
 		if not v:FindFirstChildOfClass("Texture") then
     		local Studs = Instance.new("Texture")
     		Studs.Parent = v
@@ -74,9 +86,23 @@ for _, v in ipairs(game:GetDescendants()) do
     		Studs.Texture = "rbxassetid://7027211371"
     		Studs.Color3 = Color3.new(v.Color.R * 2, v.Color.G * 2, v.Color.B * 2)
     		Studs.Transparency = v.Transparency
+            end
 		end
     end
 end
+workspace.ChildAdded:Connect(function(part)
+if part:IsA"BasePart" and part.Material == Enum.Material.Plastic and part.TopSurface == Enum.SurfaceType.Studs then
+        if game:GetService"Players":GetPlayerFromCharacter(part.Parent) then return end
+		if not v:FindFirstChildOfClass("Texture") then
+    		local Studs = Instance.new("Texture")
+    		Studs.Parent = part
+    		Studs.Face = Enum.NormalId.Top
+    		Studs.Texture = "rbxassetid://7027211371"
+    		Studs.Color3 = Color3.new(v.Color.R * 2, v.Color.G * 2, v.Color.B * 2)
+    		Studs.Transparency = v.Transparency
+		end
+    end
+end)
 --HealthBar
 TopBar.RightFrame.HealthBar:Destroy()
 local NameHealthContainer = Instance.new("Frame")
@@ -119,7 +145,7 @@ HealthFill.Size = UDim2.new(1, 0, 1, 0)
 HealthFill.Active = false
 Username.Text = game:GetService("Players").LocalPlayer.Name
 spawn(
-    pcall(function()
+    function()
     game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health,false)
 	local player = game:GetService"Players".LocalPlayer
 	local frame = HealthContainer
@@ -144,7 +170,7 @@ pcall(function()
         end
 end)
 	end)
-end))
+end)
     spawn(function()
         game:GetService("RunService").Heartbeat:Connect(function()
             if game:GetService"Players".LocalPlayer.PlayerGui:FindFirstChild"Chat" == nil then return end
@@ -262,7 +288,7 @@ end)
             Icon.Image = "rbxasset://textures/ui/icon_placeowner.png"
         end
 
-        if is_friend then
+        if is_friend ~= nil then
             Icon.Image = "rbxasset://textures/ui/icon_friends_16.png"
         end
 
@@ -376,9 +402,11 @@ end)
         end
 
         local function isfriend_func()
+            if not v then return end
             if v:IsFriendsWith(game:GetService"Players".LocalPlayer.UserId) then
                 return true
             end
+            return nil
         end
 
         addplr(v.Name, isbc_func(), isfriend_func(), isdev_func())
@@ -390,18 +418,21 @@ end)
             if player.MembershipType == Enum.MembershipType.Premium then
                 return true
             end
+            return nil
         end
 
         local function isdev_func()
             if player.UserId == game.CreatorId then
                 return true
             end
+            return nil
         end
 
         local function isfriend_func()
             if player:IsFriendsWith(game:GetService"Players".LocalPlayer.UserId) then
                 return true
             end
+            return nil
         end
 
         addplr(player.Name, isbc_func(), isfriend_func(), isdev_func())
@@ -432,6 +463,23 @@ mouse.Changed:Connect(function()
         mouse.Icon = 'rbxasset://textures/ArrowCursor.png'
     end
 end)
-
---Old Console
---loadstring(game:HttpGet("https://raw.githubusercontent.com/specowos/lua-projects/main/project%202016%3A%20Remastered/modules/old_console.lua"))()
+task.spawn(function()
+--Credits to ✟_SPYRMAM_YT✟#9935
+   -- Creates all neccessary scripts for the gui on initial load, everything except build tools
+   -- Created by Ben T. 10/29/10
+   -- Please note that these are loaded in a specific order to diminish errors/perceived load time by user
+   -- This can be useful in cases where a flag configuration issue causes requiring a CoreScript to fail
+   local scriptContext = game:GetService("ScriptContext")
+      local soundFolder = Instance.new("Folder")
+   soundFolder.Name = "Sounds"
+   soundFolder.Parent = RobloxGui
+   local function safeRequire(moduleScript)
+    local moduleReturnValue = nil
+    local success, err = pcall(function() moduleReturnValue = require(moduleScript) end)
+    if not success then
+    warn("Failure to Start CoreScript module" ..moduleScript.Name.. ".\n" ..err)
+    end
+    return moduleReturnValue
+   end
+   task.spawn(function() safeRequire(RobloxGui.Modules.BackpackScript) end)
+end)
