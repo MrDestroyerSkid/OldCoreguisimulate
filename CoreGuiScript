@@ -1,5 +1,5 @@
 --This script is 1 time execute, rejoin to modify the settings again :)
---Updated last 14/08/2023
+--Updated last 15/08/2023
 --Discord: discord.gg/6q6Q8AWDp3
 --Settings
 EnabHealth = true --Enable old healthbar
